@@ -30,15 +30,40 @@
 /* ====================================== */
 
 .frame {
-  float: none;
   margin: 0px auto;
-  padding-top: 100px;
-  /* border: 1px solid #e2e2e2; */
+  padding-bottom: 0px;
+  margin-top: 20px;
+  padding: 90px 50px 0px 50px;
+  border-radius: 50px;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  flex-direction: row;
+  height: 850px;
 }
 
 .array-bar {
+  margin-top: auto;
   width: 2px;
   background-color: turquoise;
   display: inline-block;
-  margin: 0 1px;
+  margin-right: 1px;
+  margin-left: 1px;
+  margin-bottom: 0px;
+}
+/* ====================================== */
+@media screen and (max-width: 700px) {
+  .array-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .column {
+    margin: 0 auto;
+
+    display: inline-block;
+  }
+  .frame {
+    display: inline-block;
+  }
+}
+@media screen and (max-width: 700px) {
 }

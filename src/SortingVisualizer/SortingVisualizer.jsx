@@ -10,8 +10,8 @@ const PRIMARY_COLOR = 'turquoise';
 const SECONDARY_COLOR = 'blue';
 const ANIMATION_SPEED_MS = 5;
 
-const MIN_ELEMENTS = 10;
-const MAX_ELEMENTS = 300;
+let MIN_ELEMENTS = 10;
+let MAX_ELEMENTS = 50;
 
 export default class SortingVisualizer extends Component {
   constructor(props) {
@@ -20,17 +20,24 @@ export default class SortingVisualizer extends Component {
     this.state = {
       array: [],
       selected: false,
-      elements: 100
+      elements: MAX_ELEMENTS
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    document.addEventListener('DOMContentLoaded', function (event) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    });
-
     this.resetArray();
+    this.setRange();
+  }
+
+  setRange() {
+    if (window.screen.width <= 700 && window.screen.width >= 400) {
+      MAX_ELEMENTS = 90;
+    } else if (window.screen.width < 400) {
+      MAX_ELEMENTS = 50;
+    } else {
+      MAX_ELEMENTS = 300;
+    }
   }
 
   resetArray() {
@@ -57,6 +64,7 @@ export default class SortingVisualizer extends Component {
   quickSort() {
     const [animations] = getQuickSortAnimations(this.state.array);
     showAnimations(animations);
+    this.resetArray();
   }
   bubbleSort() {
     const [animations, sortArray] = getBubbleSortAnimations(this.state.array);

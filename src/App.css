@@ -61,3 +61,22 @@ html {
 }
 
 /* ================================================================================= */
+@media screen and (max-width: 700px) {
+  .main-head {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+  .github-icon {
+    transform: scale(1);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .main-head {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  .github-icon {
+    transform: scale(0.8);
+  }
+}

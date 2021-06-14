@@ -97,3 +97,17 @@ html::before {
   width: 30px;
   z-index: 0;
 }
+
+/* ================================================================================= */
+
+@media screen and (max-width: 700px) {
+  .toggle {
+    transform: scale(0.4);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .toggle {
+    transform: scale(0.3);
+  }
+}
