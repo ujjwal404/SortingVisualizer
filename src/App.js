@@ -14,7 +14,7 @@ export default class App extends Component {
             <div className="right-icons">
               <ThemeToggle />
               <div className="github-icon">
-                <a href="https://github.com/ujjwal404">
+                <a href="https://github.com/ujjwal404/SortingVisualizer">
                   <GithubIcon />
                 </a>
               </div>
