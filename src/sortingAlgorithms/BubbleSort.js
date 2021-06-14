@@ -2,9 +2,7 @@ export function getBubbleSortAnimations(array) {
   let animations = [];
   let auxillaryArray = array.slice();
   bubbleSort(auxillaryArray, animations);
-  const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-  console.log(arraysAreEqual(javaScriptSortedArray, auxillaryArray));
-  array = auxillaryArray;
+
   return [animations, array];
 }
 
@@ -14,8 +12,8 @@ function bubbleSort(auxillaryArray, animations) {
   while (iters > 0) {
     let swapped = false;
     for (let i = 0; i < iters; ++i) {
-      animations.push(['comparision1', i, i + 1]);
-      animations.push(['comparision2', i, i + 1]);
+      animations.push(['comparison1', i, i + 1]);
+      animations.push(['comparison2', i, i + 1]);
       if (auxillaryArray[i] > auxillaryArray[i + 1]) {
         swapped = true;
         animations.push(['swap', i, auxillaryArray[i + 1]]);
@@ -32,16 +30,4 @@ function swap(auxillaryArray, firstIndex, secondIndex) {
   let temp = auxillaryArray[firstIndex];
   auxillaryArray[firstIndex] = auxillaryArray[secondIndex];
   auxillaryArray[secondIndex] = temp;
-}
-
-function arraysAreEqual(firstArray, secondArray) {
-  if (firstArray.length !== secondArray.length) {
-    return false;
-  }
-  for (let i = 0; i < firstArray.length; i++) {
-    if (firstArray[i] !== secondArray[i]) {
-      return false;
-    }
-  }
-  return true;
 }

@@ -1,10 +1,32 @@
 .array-container {
-  margin: 200px auto;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 0.5fr 1.5fr;
+}
+
+.column {
+  display: inline-block;
+  margin-left: 200px;
+  margin-top: 100px;
+  /* border: 1px solid #e2e2e2; */
+}
+.column button {
+  display: block;
+  margin: 40px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.frame {
+  float: none;
+  margin: 0px auto;
+  padding-top: 100px;
+  /* border: 1px solid #e2e2e2; */
 }
 
 .array-bar {
   width: 2px;
-  background-color: pink;
+  background-color: turquoise;
   display: inline-block;
   margin: 0 1px;
 }

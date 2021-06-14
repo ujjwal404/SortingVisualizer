@@ -19,30 +19,29 @@ function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animati
   let i = startIdx;
   let j = middleIdx + 1;
   while (i <= middleIdx && j <= endIdx) {
-    animations.push([i, j]);
+    animations.push(['comparison1', i, j]);
+    animations.push(['comparison2', i, j]);
 
-    animations.push([i, j]);
     if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-      animations.push([k, auxiliaryArray[i]]);
+      animations.push(['change', k, auxiliaryArray[i]]);
       mainArray[k++] = auxiliaryArray[i++];
     } else {
-      animations.push([k, auxiliaryArray[j]]);
+      animations.push(['change', k, auxiliaryArray[j]]);
       mainArray[k++] = auxiliaryArray[j++];
     }
   }
   while (i <= middleIdx) {
-    animations.push([i, i]);
+    animations.push(['comparison1', i, i]);
+    animations.push(['comparison2', i, i]);
 
-    animations.push([i, i]);
-
-    animations.push([k, auxiliaryArray[i]]);
+    animations.push(['change', k, auxiliaryArray[i]]);
     mainArray[k++] = auxiliaryArray[i++];
   }
   while (j <= endIdx) {
-    animations.push([j, j]);
+    animations.push(['comparison1', j, j]);
+    animations.push(['comparison2', j, j]);
 
-    animations.push([j, j]);
-    animations.push([k, auxiliaryArray[j]]);
+    animations.push(['change', k, auxiliaryArray[j]]);
     mainArray[k++] = auxiliaryArray[j++];
   }
 }
