@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { ReactComponent as MoonIcon } from './assets/svg/moon.svg';
-// import { ReactComponent as SunIcon } from './assets/svg/sun.svg';
+import { ReactComponent as MoonIcon } from './assets/moon.svg';
+import { ReactComponent as SunIcon } from './assets/sun2.svg';
 import './switch.css';
 
 export default function ThemeToggle({}) {
@@ -27,9 +27,11 @@ export default function ThemeToggle({}) {
     if (isDarkEnabled) {
       docEl.style.setProperty('--background', black);
       docEl.style.setProperty('--foreground', white);
+      document.querySelector('html').classList.add('darkmode');
     } else {
       docEl.style.setProperty('--background', white);
       docEl.style.setProperty('--foreground', black);
+      document.querySelector('html').classList.remove('darkmode');
     }
   };
 
@@ -38,8 +40,8 @@ export default function ThemeToggle({}) {
       <div className={`toggle ${isEnabled ? 'enabled' : 'disabled'}`}>
         <span className="hidden">{isEnabled ? 'Enable Light Mode' : 'Enable Dark Mode'}</span>
         <div className="icons">
-          {/* <SunIcon />
-          <MoonIcon /> */}
+          <SunIcon />
+          <MoonIcon />
         </div>
         <input
           id="toggle"
