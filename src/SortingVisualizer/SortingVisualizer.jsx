@@ -8,7 +8,10 @@ import './SortingVisualizer.css';
 
 const PRIMARY_COLOR = 'turquoise';
 const SECONDARY_COLOR = 'blue';
-const ANIMATION_SPEED_MS = 5;
+let ANIMATION_SPEED_MS = 4;
+
+let MIN_SPEED = 1;
+let MAX_SPEED = 20;
 
 let MIN_ELEMENTS = 10;
 let MAX_ELEMENTS = 50;
@@ -19,15 +22,30 @@ export default class SortingVisualizer extends Component {
 
     this.state = {
       array: [],
-      selected: false,
-      elements: MAX_ELEMENTS
+      selected: true,
+      elements: MAX_ELEMENTS,
+      speed: ANIMATION_SPEED_MS
     };
     this.handleChange = this.handleChange.bind(this);
+    this.speedChange = this.speedChange.bind(this);
+    this.disableButtons = this.disableButtons.bind(this);
+
+    // this.mergeSort = this.mergeSort.bind(this);
   }
 
   componentDidMount() {
     this.resetArray();
     this.setRange();
+
+    document.getElementById('flip').oninput = function () {
+      var value = ((this.value - this.min) / (this.max - this.min)) * 100;
+      this.style.background =
+        'linear-gradient(to right, #fff 0%, #fff ' +
+        value +
+        '%, #006aff ' +
+        value +
+        '%, #006aff 100%)';
+    };
   }
 
   setRange() {
@@ -47,43 +65,79 @@ export default class SortingVisualizer extends Component {
     }
     this.setState({ array });
   }
+
   disableButtons() {
-    this.setState({
-      selected: true
+    this.setState({ selected: !this.state.selected }, () => {
+      console.log(this.state.selected);
     });
   }
-
-  async mergeSort() {
-    let animations = getMergeSortAnimations(this.state.array);
-    showAnimations(animations);
+  enableButtons() {
+    this.setState({ selected: false }, () => {
+      console.log(this.state.selected);
+    });
   }
 
   // will do later :/
   heapSort() {}
 
+  mergeSort() {
+    let animations = getMergeSortAnimations(this.state.array);
+    this.showAnimations(animations);
+  }
+
   quickSort() {
     const [animations] = getQuickSortAnimations(this.state.array);
-    showAnimations(animations);
+    this.showAnimations(animations);
     this.resetArray();
   }
   bubbleSort() {
     const [animations, sortArray] = getBubbleSortAnimations(this.state.array);
-    showAnimations(animations);
+    this.showAnimations(animations);
   }
 
   InsertionSort() {
+    this.disableButtons();
     const [animations] = getInsertionSortAnimations(this.state.array);
-    showAnimations(animations);
+    this.showAnimations(animations);
+    this.disableButtons();
   }
 
   SelectionSort() {
     const [animations] = getSelectionSortAnimations(this.state.array);
-    showAnimations(animations);
+    this.showAnimations(animations);
   }
 
   handleChange(e) {
     this.setState({ elements: e.target.value });
     this.resetArray();
+  }
+  speedChange(e) {
+    this.setState({ speed: e.target.value });
+  }
+  showAnimations(animations) {
+    for (let i = 0; i < animations.length; i++) {
+      const isColorChange = animations[i][0] == 'comparison1' || animations[i][0] == 'comparison2';
+      const arrayBars = document.getElementsByClassName('array-bar');
+      if (isColorChange === true) {
+        const color = animations[i][0] == 'comparison1' ? SECONDARY_COLOR : PRIMARY_COLOR;
+        const [comparision, barOneIndex, barTwoIndex] = animations[i];
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoStyle = arrayBars[barTwoIndex].style;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * this.state.speed);
+      } else {
+        const [swap, barIndex, newHeight] = animations[i];
+        if (barIndex === -1) {
+          continue;
+        }
+        const barStyle = arrayBars[barIndex].style;
+        setTimeout(() => {
+          barStyle.height = `${newHeight}px`;
+        }, i * this.state.speed);
+      }
+    }
   }
 
   render() {
@@ -91,6 +145,7 @@ export default class SortingVisualizer extends Component {
     return (
       <div className="array-container">
         <div className="column">
+          <p className="no-of-els"> No. of Elements :</p>
           <input
             type="range"
             className="slider"
@@ -98,16 +153,40 @@ export default class SortingVisualizer extends Component {
             max={MAX_ELEMENTS}
             onChange={this.handleChange}
           />
-          <button disabled={this.state.selected} onClick={() => this.resetArray()}>
+          <p className="speed"> Animation Speed</p>
+          <div className="change-in">
+            <input
+              id="flip"
+              type="range"
+              className="slider"
+              min={MIN_SPEED}
+              max={MAX_SPEED}
+              onChange={this.speedChange}
+            />
+          </div>
+
+          <button
+            disabled={!this.state.selected}
+            className="resetButton"
+            onClick={() => this.resetArray()}
+          >
             Reset Array
           </button>
-
-          <button onClick={() => this.mergeSort()}>Merge Sort</button>
-          <button onClick={() => this.InsertionSort()}>Insertion Sort</button>
-          <button onClick={() => this.SelectionSort()}>Selection Sort</button>
-          <button onClick={() => this.quickSort()}>Quick Sort</button>
-          <button onClick={() => this.heapSort()}>Heap Sort</button>
-          <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+          <button id="mergeSort" onClick={() => this.mergeSort()}>
+            Merge Sort
+          </button>
+          <button id="insertionSort" onClick={() => this.InsertionSort()}>
+            Insertion Sort
+          </button>
+          <button id="selectionSort" onClick={() => this.SelectionSort()}>
+            Selection Sort
+          </button>
+          <button id="quickSort" onClick={() => this.quickSort()}>
+            Quick Sort
+          </button>
+          <button id="bubbleSort" onClick={() => this.bubbleSort()}>
+            Bubble Sort
+          </button>
         </div>
         <div className="frame">
           {array.map((value, idx) => (
@@ -121,30 +200,4 @@ export default class SortingVisualizer extends Component {
 
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function showAnimations(animations) {
-  for (let i = 0; i < animations.length; i++) {
-    const isColorChange = animations[i][0] == 'comparison1' || animations[i][0] == 'comparison2';
-    const arrayBars = document.getElementsByClassName('array-bar');
-    if (isColorChange === true) {
-      const color = animations[i][0] == 'comparison1' ? SECONDARY_COLOR : PRIMARY_COLOR;
-      const [comparision, barOneIndex, barTwoIndex] = animations[i];
-      const barOneStyle = arrayBars[barOneIndex].style;
-      const barTwoStyle = arrayBars[barTwoIndex].style;
-      setTimeout(() => {
-        barOneStyle.backgroundColor = color;
-        barTwoStyle.backgroundColor = color;
-      }, i * ANIMATION_SPEED_MS);
-    } else {
-      const [swap, barIndex, newHeight] = animations[i];
-      if (barIndex === -1) {
-        continue;
-      }
-      const barStyle = arrayBars[barIndex].style;
-      setTimeout(() => {
-        barStyle.height = `${newHeight}px`;
-      }, i * ANIMATION_SPEED_MS);
-    }
-  }
 }
