@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ReactComponent as MoonIcon } from './assets/moon.svg';
 import { ReactComponent as SunIcon } from './assets/sun2.svg';
-import './switch.css';
+import './switch.scss';
 
 export default function ThemeToggle({}) {
   const [isEnabled, setIsEnabled] = useState(true);
