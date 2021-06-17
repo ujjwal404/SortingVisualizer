@@ -88,7 +88,6 @@ export default class SortingVisualizer extends Component {
   quickSort() {
     const [animations] = getQuickSortAnimations(this.state.array);
     this.showAnimations(animations);
-    this.resetArray();
   }
   bubbleSort() {
     const [animations, sortArray] = getBubbleSortAnimations(this.state.array);
@@ -96,10 +95,8 @@ export default class SortingVisualizer extends Component {
   }
 
   InsertionSort() {
-    this.disableButtons();
     const [animations] = getInsertionSortAnimations(this.state.array);
     this.showAnimations(animations);
-    this.disableButtons();
   }
 
   SelectionSort() {
@@ -115,6 +112,8 @@ export default class SortingVisualizer extends Component {
     this.setState({ speed: e.target.value });
   }
   showAnimations(animations) {
+    let els = document.querySelectorAll('#button');
+    els.forEach((el) => (el.disabled = true));
     for (let i = 0; i < animations.length; i++) {
       const isColorChange = animations[i][0] == 'comparison1' || animations[i][0] == 'comparison2';
       const arrayBars = document.getElementsByClassName('array-bar');
@@ -138,6 +137,8 @@ export default class SortingVisualizer extends Component {
         }, i * this.state.speed);
       }
     }
+    const RESTORE_TIME = parseInt((this.state.speed * animations.length) / 2 + 3000);
+    setTimeout(() => els.forEach((el) => (el.disabled = false)), RESTORE_TIME);
   }
 
   render() {
@@ -166,25 +167,26 @@ export default class SortingVisualizer extends Component {
           </div>
 
           <button
+            id="button"
             disabled={!this.state.selected}
             className="resetButton"
             onClick={() => this.resetArray()}
           >
             Reset Array
           </button>
-          <button id="mergeSort" onClick={() => this.mergeSort()}>
+          <button id="button" onClick={() => this.mergeSort()}>
             Merge Sort
           </button>
-          <button id="insertionSort" onClick={() => this.InsertionSort()}>
+          <button id="button" onClick={() => this.InsertionSort()}>
             Insertion Sort
           </button>
-          <button id="selectionSort" onClick={() => this.SelectionSort()}>
+          <button id="button" onClick={() => this.SelectionSort()}>
             Selection Sort
           </button>
-          <button id="quickSort" onClick={() => this.quickSort()}>
+          <button id="button" onClick={() => this.quickSort()}>
             Quick Sort
           </button>
-          <button id="bubbleSort" onClick={() => this.bubbleSort()}>
+          <button id="button" onClick={() => this.bubbleSort()}>
             Bubble Sort
           </button>
         </div>
@@ -200,4 +202,13 @@ export default class SortingVisualizer extends Component {
 
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function disableBtns() {
+  let elms = document.querySelectorAll('#button');
+  elms.forEach((el) => (el.disabled = true));
+}
+function enableBtns() {
+  let elms = document.querySelectorAll('#button');
+  elms.forEach((el) => (el.disabled = false));
 }
