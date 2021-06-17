@@ -4,7 +4,8 @@ import { getBubbleSortAnimations } from '../sortingAlgorithms/BubbleSort';
 import { getInsertionSortAnimations } from '../sortingAlgorithms/InsertionSort';
 import { getSelectionSortAnimations } from '../sortingAlgorithms/SelectionSort';
 import { getQuickSortAnimations } from '../sortingAlgorithms/QuickSort';
-import './SortingVisualizer.css';
+import './SortingVisualizer.scss';
+import './buttons.scss';
 
 const PRIMARY_COLOR = 'turquoise';
 const SECONDARY_COLOR = 'blue';
@@ -146,48 +147,44 @@ export default class SortingVisualizer extends Component {
     return (
       <div className="array-container">
         <div className="column">
-          <p className="no-of-els"> No. of Elements :</p>
-          <input
-            type="range"
-            className="slider"
-            min={MIN_ELEMENTS}
-            max={MAX_ELEMENTS}
-            onChange={this.handleChange}
-          />
-          <p className="speed"> Animation Speed</p>
-          <div className="change-in">
+          <div className="sliders">
+            <p className="no-of-els"> No. of Elements :</p>
             <input
-              id="flip"
               type="range"
               className="slider"
-              min={MIN_SPEED}
-              max={MAX_SPEED}
-              onChange={this.speedChange}
+              min={MIN_ELEMENTS}
+              max={MAX_ELEMENTS}
+              onChange={this.handleChange}
             />
+            <p className="speed"> Animation Speed</p>
+            <div className="change-in">
+              <input
+                id="flip"
+                type="range"
+                className="slider"
+                min={MIN_SPEED}
+                max={MAX_SPEED}
+                onChange={this.speedChange}
+              />
+            </div>
           </div>
-
-          <button
-            id="button"
-            disabled={!this.state.selected}
-            className="resetButton"
-            onClick={() => this.resetArray()}
-          >
+          <button id="button" className="slide" onClick={() => this.resetArray()}>
             Reset Array
           </button>
-          <button id="button" onClick={() => this.mergeSort()}>
+          <button id="button" className="offset" onClick={() => this.mergeSort()}>
             Merge Sort
           </button>
-          <button id="button" onClick={() => this.InsertionSort()}>
-            Insertion Sort
-          </button>
-          <button id="button" onClick={() => this.SelectionSort()}>
-            Selection Sort
-          </button>
-          <button id="button" onClick={() => this.quickSort()}>
+          <button id="button" className="offset" onClick={() => this.quickSort()}>
             Quick Sort
           </button>
-          <button id="button" onClick={() => this.bubbleSort()}>
+          <button id="button" className="offset" onClick={() => this.bubbleSort()}>
             Bubble Sort
+          </button>
+          <button id="button" className="offset" onClick={() => this.SelectionSort()}>
+            Selection Sort
+          </button>
+          <button id="button" className="offset" onClick={() => this.InsertionSort()}>
+            Insertion Sort
           </button>
         </div>
         <div className="frame">
