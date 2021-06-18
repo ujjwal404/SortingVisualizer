@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SortingVisualizer from './SortingVisualizer/SortingVisualizer';
 import { ReactComponent as GithubIcon } from './utils/assets/github.svg';
-import './App.css';
+import './App.scss';
 import ThemeToggle from './utils/ThemeSwitch';
 
 export default class App extends Component {
